@@ -11,6 +11,13 @@ use SilverShop\ShippingLabels\Provider\ShippingLabelResult;
 use SilverStripe\Assets\File;
 use SilverStripe\Core\Extension;
 use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordViewer;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;
+use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\ToggleCompositeField;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\Security\Security;
 use Throwable;
@@ -31,6 +38,37 @@ class OrderLabelExtension extends Extension
     private static array $cascade_deletes = [
         'ShippingLabels',
     ];
+
+    /**
+     * Add a "Shipping labels" tab to the order edit form: the order's labels (view + delete + download the PDF via
+     * the record view) plus the inputs for a new label. The "Create shipping label" action button that consumes
+     * these inputs is added by {@link OrderLabelItemRequestExtension}.
+     */
+    public function updateCMSFields(FieldList $fields): void
+    {
+        $providers = Injector::inst()->get(ProviderRegistry::class)->options();
+
+        $grid = GridField::create(
+            'ShippingLabels',
+            _t(self::class . '.ShippingLabels', 'Shipping labels'),
+            $this->getOwner()->ShippingLabels(),
+            GridFieldConfig_RecordViewer::create()->addComponent(GridFieldDeleteAction::create())
+        );
+
+        $create = ToggleCompositeField::create(
+            'NewShippingLabel',
+            _t(self::class . '.CreateLabel', 'Create a shipping label'),
+            [
+                DropdownField::create('NewLabelProvider', _t(self::class . '.Provider', 'Provider'), $providers)
+                    ->setEmptyString(_t(self::class . '.DefaultProvider', '(shop default)')),
+                TextField::create('NewLabelCarrier', _t(self::class . '.Carrier', 'Carrier')),
+                TextField::create('NewLabelTracking', _t(self::class . '.Tracking', 'Tracking number')),
+                TextField::create('NewLabelTrackingUrl', _t(self::class . '.TrackingUrl', 'Tracking URL')),
+            ]
+        );
+
+        $fields->addFieldsToTab('Root.ShippingLabels', [$create, $grid]);
+    }
 
     /**
      * Create a shipping label for this order with the named provider (or the shop default). Provider/API failures
