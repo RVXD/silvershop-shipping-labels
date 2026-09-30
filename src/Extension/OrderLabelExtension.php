@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace SilverShop\ShippingLabels\Extension;
 
+use LeKoala\CmsActions\CustomLink;
 use RuntimeException;
 use SilverShop\ShippingLabels\Model\ShippingLabel;
 use SilverShop\ShippingLabels\Provider\ProviderRegistry;
 use SilverShop\ShippingLabels\Provider\ShippingLabelResult;
 use SilverStripe\Assets\File;
+use SilverStripe\Control\Director;
+use SilverStripe\Core\Convert;
 use SilverStripe\Core\Extension;
 use SilverStripe\Core\Injector\Injector;
-use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\Forms\GridField\GridFieldConfig_RecordViewer;
-use SilverStripe\Forms\GridField\GridFieldDeleteAction;
-use SilverStripe\Forms\TextField;
-use SilverStripe\Forms\ToggleCompositeField;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\Security\Security;
 use Throwable;
@@ -40,34 +40,57 @@ class OrderLabelExtension extends Extension
     ];
 
     /**
-     * Add a "Shipping labels" tab to the order edit form: the order's labels (view + delete + download the PDF via
-     * the record view) plus the inputs for a new label. The "Create shipping label" action button that consumes
-     * these inputs is added by {@link OrderLabelItemRequestExtension}.
+     * Add a "Shipping labels" tab to the order edit form: an editable grid of the order's labels (add / edit / delete
+     * as ordinary records) plus a "Packing slip" tab previewing the packing slip PDF inline. The "Print packing slip"
+     * button is added in {@link self::updateCMSActions()}.
      */
     public function updateCMSFields(FieldList $fields): void
     {
-        $providers = Injector::inst()->get(ProviderRegistry::class)->options();
-
         $grid = GridField::create(
             'ShippingLabels',
             _t(self::class . '.ShippingLabels', 'Shipping labels'),
             $this->getOwner()->ShippingLabels(),
-            GridFieldConfig_RecordViewer::create()->addComponent(GridFieldDeleteAction::create())
+            GridFieldConfig_RecordEditor::create()
         );
 
-        $create = ToggleCompositeField::create(
-            'NewShippingLabel',
-            _t(self::class . '.CreateLabel', 'Create a shipping label'),
-            [
-                DropdownField::create('NewLabelProvider', _t(self::class . '.Provider', 'Provider'), $providers)
-                    ->setEmptyString(_t(self::class . '.DefaultProvider', '(shop default)')),
-                TextField::create('NewLabelCarrier', _t(self::class . '.Carrier', 'Carrier')),
-                TextField::create('NewLabelTracking', _t(self::class . '.Tracking', 'Tracking number')),
-                TextField::create('NewLabelTrackingUrl', _t(self::class . '.TrackingUrl', 'Tracking URL')),
-            ]
-        );
+        $fields->addFieldToTab('Root.ShippingLabels', $grid);
 
-        $fields->addFieldsToTab('Root.ShippingLabels', [$create, $grid]);
+        // Preview the packing slip PDF inline (saved orders only — the route needs an order ID).
+        if ($this->getOwner()->isInDB()) {
+            $slipUrl = Director::absoluteURL('shippinglabels/packingslip/' . $this->getOwner()->ID);
+            $fields->findOrMakeTab('Root.PackingSlip', _t(self::class . '.PackingSlipTab', 'Packing slip'));
+            $fields->addFieldToTab(
+                'Root.PackingSlip',
+                LiteralField::create(
+                    'PackingSlipPreview',
+                    '<iframe src="' . Convert::raw2att($slipUrl) . '" '
+                    . 'style="width:100%;height:80vh;min-height:600px;border:1px solid #ced5e1;border-radius:4px;" '
+                    . 'title="' . Convert::raw2att(_t(self::class . '.PackingSlipTab', 'Packing slip')) . '"></iframe>'
+                )
+            );
+        }
+    }
+
+    /**
+     * Add a "Print packing slip" button to the order edit-form action bar via lekoala/silverstripe-cms-actions. It
+     * opens the packing slip PDF in a new tab via {@link \SilverShop\ShippingLabels\Control\ShippingLabelController}.
+     */
+    public function updateCMSActions(FieldList $actions): void
+    {
+        $order = $this->getOwner();
+        if (!$order->isInDB()) {
+            return;
+        }
+
+        $actions->push(
+            CustomLink::create(
+                'printPackingSlip',
+                _t(self::class . '.PrintPackingSlip', 'Print packing slip'),
+                Director::absoluteURL('shippinglabels/packingslip/' . $order->ID)
+            )
+                ->setButtonIcon('print')
+                ->setNewWindow(true)
+        );
     }
 
     /**

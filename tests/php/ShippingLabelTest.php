@@ -66,4 +66,22 @@ class ShippingLabelTest extends SapphireTest
         $this->assertNotEmpty($pdf);
         $this->assertStringStartsWith('%PDF', $pdf);
     }
+
+    public function testLabelWrittenDirectlyDefaultsStatus(): void
+    {
+        $order = Order::create(['Reference' => 'EDIT-1']);
+        $order->write();
+
+        // A label edited as an ordinary GridField record (no provider call).
+        $label = ShippingLabel::create([
+            'OrderID' => $order->ID,
+            'Provider' => 'manual',
+            'Carrier' => 'DHL',
+            'TrackingNumber' => 'JVGL-1',
+        ]);
+        $label->write();
+
+        $this->assertSame('Created', $label->Status);
+        $this->assertTrue($order->ShippingLabels()->filter('Carrier', 'DHL')->exists());
+    }
 }

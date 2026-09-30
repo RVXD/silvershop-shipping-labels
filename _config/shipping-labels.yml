@@ -11,10 +11,6 @@ SilverStripe\SiteConfig\SiteConfig:
   extensions:
     - SilverShop\ShippingLabels\Extension\ShippingLabelConfigExtension
 
-SilverStripe\Forms\GridField\GridFieldDetailForm_ItemRequest:
-  extensions:
-    - SilverShop\ShippingLabels\Extension\OrderLabelItemRequestExtension
-
 SilverShop\ShippingLabels\Provider\ProviderRegistry:
   providers:
     manual: 'SilverShop\ShippingLabels\Provider\ManualProvider'

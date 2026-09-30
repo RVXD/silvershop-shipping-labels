@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace SilverShop\ShippingLabels\Model;
 
 use SilverShop\Model\Order;
+use SilverShop\ShippingLabels\Provider\ProviderRegistry;
+use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\File;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
 
 /**
- * An immutable record of a shipping label created for an order: the provider/carrier, tracking, status and the label
- * PDF (when the provider returned one). An order may have several (reprints, retries, multi-parcel).
+ * A shipping label created for an order: the provider/carrier, tracking, status and the label PDF (when the provider
+ * returned one, or when a carrier PDF is attached manually). An order may have several (reprints, retries,
+ * multi-parcel). Records are edited as ordinary GridField rows on the order's "Shipping labels" tab.
  *
  * @property string $Provider
  * @property string $Carrier
@@ -64,17 +71,77 @@ class ShippingLabel extends DataObject
 
     private static string $default_sort = 'Created DESC';
 
-    /**
-     * Labels are immutable once created; use cancel instead of editing.
-     */
-    public function canEdit($member = null): bool
+    public function getCMSFields()
     {
-        return false;
+        $fields = parent::getCMSFields();
+
+        // The order is the GridField parent; its foreign key is set automatically.
+        $fields->removeByName('OrderID');
+
+        // Offer the configured providers rather than a free-text code.
+        $providers = Injector::inst()->get(ProviderRegistry::class)->options();
+        $fields->replaceField(
+            'Provider',
+            DropdownField::create('Provider', $this->fieldLabel('Provider'), $providers)
+                ->setEmptyString(_t(self::class . '.DefaultProvider', '(shop default)'))
+                ->setDescription(_t(self::class . '.ProviderDesc', 'Carrier integration this label belongs to.'))
+        );
+
+        // Restrict the attached label to a PDF in a dedicated folder.
+        $labelFile = $fields->dataFieldByName('LabelFile');
+        if ($labelFile instanceof UploadField) {
+            $labelFile->setFolderName('shipping-labels');
+            $labelFile->getValidator()->setAllowedExtensions(['pdf']);
+        }
+
+        // Provider-managed fields: visible but not hand-edited.
+        foreach (['ProviderRef', 'Message', 'CreatedByID'] as $name) {
+            if ($field = $fields->dataFieldByName($name)) {
+                $fields->replaceField($name, $field->performReadonlyTransformation());
+            }
+        }
+
+        return $fields;
+    }
+
+    protected function onBeforeWrite(): void
+    {
+        parent::onBeforeWrite();
+
+        if (!$this->Status) {
+            $this->Status = 'Created';
+        }
+        if (!$this->CreatedByID && ($member = Security::getCurrentUser())) {
+            $this->CreatedByID = $member->ID;
+        }
     }
 
     public function canView($member = null): bool
     {
-        return $this->Order()->canView($member);
+        $order = $this->Order();
+
+        return $order && $order->exists()
+            ? $order->canView($member)
+            : Permission::check('CMS_ACCESS', 'any', $member);
+    }
+
+    public function canEdit($member = null): bool
+    {
+        $order = $this->Order();
+
+        return $order && $order->exists()
+            ? $order->canEdit($member)
+            : Permission::check('CMS_ACCESS', 'any', $member);
+    }
+
+    public function canCreate($member = null, $context = []): bool
+    {
+        return Permission::check('CMS_ACCESS', 'any', $member);
+    }
+
+    public function canDelete($member = null): bool
+    {
+        return $this->canEdit($member);
     }
 
     public function getTitle(): string
