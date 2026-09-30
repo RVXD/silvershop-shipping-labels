@@ -1,0 +1,16 @@
+---
+Name: silvershop-shipping-labels
+After:
+  - silvershop-config
+---
+SilverShop\Model\Order:
+  extensions:
+    - SilverShop\ShippingLabels\Extension\OrderLabelExtension
+
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - SilverShop\ShippingLabels\Extension\ShippingLabelConfigExtension
+
+SilverShop\ShippingLabels\Provider\ProviderRegistry:
+  providers:
+    manual: 'SilverShop\ShippingLabels\Provider\ManualProvider'
