@@ -30,7 +30,8 @@
     <div class="box">
         <h3><%t SilverShop\ShippingLabels\ShippingLabelDocument.FROM 'From' %></h3>
         <% with $SiteConfig %>
-            $SenderName<% if $SenderStreet %>, $SenderStreet<% end_if %><% if $SenderPostcode || $SenderCity %>, $SenderPostcode $SenderCity<% end_if %><% if $SenderCountry %>, $SenderCountry<% end_if %>
+            $LabelSenderName<br>
+            $LabelSenderAddressHTML
         <% end_with %>
     </div>
 

@@ -24,10 +24,8 @@
             <td>
                 <h3><%t SilverShop\ShippingLabels\PackingSlip.FROM 'From' %></h3>
                 <% with $SiteConfig %>
-                    $SenderName<br>
-                    $SenderStreet<br>
-                    $SenderPostcode $SenderCity<br>
-                    $SenderCountry
+                    $LabelSenderName<br>
+                    $LabelSenderAddressHTML
                 <% end_with %>
             </td>
             <td>
