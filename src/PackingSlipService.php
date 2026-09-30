@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace SilverShop\ShippingLabels;
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use SilverShop\Model\Order;
 
 /**
@@ -21,15 +19,6 @@ class PackingSlipService
 
     public function pdf(Order $order): string
     {
-        $options = new Options();
-        $options->set('isRemoteEnabled', false);
-        $options->set('defaultFont', 'DejaVu Sans');
-
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($this->html($order));
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        return (string) $dompdf->output();
+        return PdfRenderer::render($this->html($order), 'A4', 'portrait');
     }
 }

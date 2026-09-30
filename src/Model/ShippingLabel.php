@@ -8,8 +8,11 @@ use SilverShop\Model\Order;
 use SilverShop\ShippingLabels\Provider\ProviderRegistry;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\File;
+use SilverStripe\Control\Director;
+use SilverStripe\Core\Convert;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
@@ -99,6 +102,21 @@ class ShippingLabel extends DataObject
             if ($field = $fields->dataFieldByName($name)) {
                 $fields->replaceField($name, $field->performReadonlyTransformation());
             }
+        }
+
+        // Preview the label PDF (the uploaded/carrier file, or one rendered on the fly for the Manual provider).
+        if ($this->isInDB()) {
+            $url = Director::absoluteURL('shippinglabels/label/' . $this->ID);
+            $fields->findOrMakeTab('Root.LabelPreview', _t(self::class . '.LabelTab', 'Label'));
+            $fields->addFieldToTab(
+                'Root.LabelPreview',
+                LiteralField::create(
+                    'LabelPreview',
+                    '<iframe src="' . Convert::raw2att($url) . '" '
+                    . 'style="width:100%;height:80vh;min-height:520px;border:1px solid #ced5e1;border-radius:4px;" '
+                    . 'title="' . Convert::raw2att(_t(self::class . '.LabelTab', 'Label')) . '"></iframe>'
+                )
+            );
         }
 
         return $fields;

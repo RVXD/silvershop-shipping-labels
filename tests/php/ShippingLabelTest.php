@@ -6,6 +6,7 @@ namespace SilverShop\ShippingLabels\Tests;
 
 use InvalidArgumentException;
 use SilverShop\Model\Order;
+use SilverShop\ShippingLabels\LabelPdfService;
 use SilverShop\ShippingLabels\Model\ShippingLabel;
 use SilverShop\ShippingLabels\PackingSlipService;
 use SilverShop\ShippingLabels\Provider\ProviderRegistry;
@@ -83,5 +84,24 @@ class ShippingLabelTest extends SapphireTest
 
         $this->assertSame('Created', $label->Status);
         $this->assertTrue($order->ShippingLabels()->filter('Carrier', 'DHL')->exists());
+    }
+
+    public function testLabelPdfRenders(): void
+    {
+        $order = Order::create(['Reference' => 'LBL-1']);
+        $order->write();
+
+        $label = ShippingLabel::create([
+            'OrderID' => $order->ID,
+            'Provider' => 'manual',
+            'Carrier' => 'PostNL',
+            'TrackingNumber' => '3SXYZ123',
+        ]);
+        $label->write();
+
+        $pdf = Injector::inst()->get(LabelPdfService::class)->pdf($label);
+
+        $this->assertNotEmpty($pdf);
+        $this->assertStringStartsWith('%PDF', $pdf);
     }
 }
