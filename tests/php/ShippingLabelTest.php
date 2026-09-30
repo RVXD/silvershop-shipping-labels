@@ -7,6 +7,7 @@ namespace SilverShop\ShippingLabels\Tests;
 use InvalidArgumentException;
 use SilverShop\Model\Order;
 use SilverShop\ShippingLabels\Model\ShippingLabel;
+use SilverShop\ShippingLabels\PackingSlipService;
 use SilverShop\ShippingLabels\Provider\ProviderRegistry;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\SapphireTest;
@@ -53,5 +54,16 @@ class ShippingLabelTest extends SapphireTest
 
         $this->expectException(InvalidArgumentException::class);
         $order->createShippingLabel('nope');
+    }
+
+    public function testPackingSlipRendersPdf(): void
+    {
+        $order = Order::create(['Reference' => 'PS-TEST-1']);
+        $order->write();
+
+        $pdf = Injector::inst()->get(PackingSlipService::class)->pdf($order);
+
+        $this->assertNotEmpty($pdf);
+        $this->assertStringStartsWith('%PDF', $pdf);
     }
 }
