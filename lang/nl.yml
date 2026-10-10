@@ -20,3 +20,13 @@ nl:
     LabelTab: 'Label'
   SilverShop\ShippingLabels\Provider\ManualProvider:
     Title: 'Handmatig (tracking invoeren / label uploaden)'
+  SilverShop\ShippingLabels\Report\UnshippedOrdersReport:
+    TITLE: 'Onverzonden bestellingen (nog geen label)'
+    DESC: 'Geplaatste bestellingen die wachten op afhandeling: er is nog geen verzendlabel aangemaakt. Oudste eerst.'
+    Start: 'Vanaf (besteldatum)'
+    End: 'Tot (besteldatum)'
+    ColReference: 'Bestelling'
+    ColCustomer: 'Klant'
+    ColPlaced: 'Geplaatst'
+    ColPaid: 'Betaald'
+    ColTotal: 'Totaal'

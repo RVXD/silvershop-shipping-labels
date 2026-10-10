@@ -20,3 +20,13 @@ de:
     LabelTab: 'Etikett'
   SilverShop\ShippingLabels\Provider\ManualProvider:
     Title: 'Manuell (Tracking eingeben / Etikett hochladen)'
+  SilverShop\ShippingLabels\Report\UnshippedOrdersReport:
+    TITLE: 'Nicht versandte Bestellungen (noch kein Etikett)'
+    DESC: 'Aufgegebene Bestellungen, die auf die Abwicklung warten: Es wurde noch kein Versandetikett erstellt. Älteste zuerst.'
+    Start: 'Von (Bestelldatum)'
+    End: 'Bis (Bestelldatum)'
+    ColReference: 'Bestellung'
+    ColCustomer: 'Kunde'
+    ColPlaced: 'Aufgegeben'
+    ColPaid: 'Bezahlt'
+    ColTotal: 'Gesamt'

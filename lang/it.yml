@@ -20,3 +20,13 @@ it:
     LabelTab: 'Etichetta'
   SilverShop\ShippingLabels\Provider\ManualProvider:
     Title: "Manuale (inserisci tracking / carica un'etichetta)"
+  SilverShop\ShippingLabels\Report\UnshippedOrdersReport:
+    TITLE: 'Ordini non spediti (ancora senza etichetta)'
+    DESC: "Ordini effettuati in attesa di evasione: non è ancora stata creata alcuna etichetta di spedizione. Prima i più vecchi."
+    Start: "Dal (data dell'ordine)"
+    End: "Al (data dell'ordine)"
+    ColReference: 'Ordine'
+    ColCustomer: 'Cliente'
+    ColPlaced: 'Effettuato'
+    ColPaid: 'Pagato'
+    ColTotal: 'Totale'

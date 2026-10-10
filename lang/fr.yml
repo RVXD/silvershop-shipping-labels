@@ -20,3 +20,13 @@ fr:
     LabelTab: 'Étiquette'
   SilverShop\ShippingLabels\Provider\ManualProvider:
     Title: "Manuel (saisir le suivi / téléverser une étiquette)"
+  SilverShop\ShippingLabels\Report\UnshippedOrdersReport:
+    TITLE: "Commandes non expédiées (pas encore d'étiquette)"
+    DESC: "Commandes passées en attente de traitement : aucune étiquette d'expédition n'a encore été créée. Les plus anciennes d'abord."
+    Start: 'Du (date de commande)'
+    End: 'Au (date de commande)'
+    ColReference: 'Commande'
+    ColCustomer: 'Client'
+    ColPlaced: 'Passée'
+    ColPaid: 'Payée'
+    ColTotal: 'Total'

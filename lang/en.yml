@@ -20,3 +20,13 @@ en:
     LabelTab: 'Label'
   SilverShop\ShippingLabels\Provider\ManualProvider:
     Title: 'Manual (enter tracking / upload a label)'
+  SilverShop\ShippingLabels\Report\UnshippedOrdersReport:
+    TITLE: 'Unshipped orders (no label yet)'
+    DESC: 'Placed orders awaiting fulfilment: no shipping label has been created yet. Oldest first.'
+    Start: 'From (placed date)'
+    End: 'To (placed date)'
+    ColReference: 'Order'
+    ColCustomer: 'Customer'
+    ColPlaced: 'Placed'
+    ColPaid: 'Paid'
+    ColTotal: 'Total'

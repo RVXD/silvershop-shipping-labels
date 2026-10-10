@@ -20,3 +20,13 @@ es:
     LabelTab: 'Etiqueta'
   SilverShop\ShippingLabels\Provider\ManualProvider:
     Title: 'Manual (introducir seguimiento / subir una etiqueta)'
+  SilverShop\ShippingLabels\Report\UnshippedOrdersReport:
+    TITLE: 'Pedidos no enviados (sin etiqueta todavía)'
+    DESC: 'Pedidos realizados pendientes de preparación: aún no se ha creado ninguna etiqueta de envío. Más antiguos primero.'
+    Start: 'Desde (fecha del pedido)'
+    End: 'Hasta (fecha del pedido)'
+    ColReference: 'Pedido'
+    ColCustomer: 'Cliente'
+    ColPlaced: 'Realizado'
+    ColPaid: 'Pagado'
+    ColTotal: 'Total'
