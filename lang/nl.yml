@@ -1,0 +1,22 @@
+nl:
+  SilverShop\ShippingLabels\Extension\OrderLabelExtension:
+    ShippingLabels: 'Verzendlabels'
+    PackingSlipTab: 'Pakbon'
+    PrintPackingSlip: 'Pakbon afdrukken'
+  SilverShop\ShippingLabels\Extension\ShippingLabelConfigExtension:
+    DefaultProvider: 'Standaard labelprovider'
+    None: '(geen)'
+    SenderAddress: 'Afzender-/retouradres'
+    SenderName: 'Naam'
+    SenderStreet: 'Straat + nummer'
+    SenderPostcode: 'Postcode'
+    SenderCity: 'Plaats'
+    SenderCountry: 'Land (ISO 3166-1 alpha-2)'
+    SenderPhone: 'Telefoon'
+    SenderEmail: 'E-mail'
+  SilverShop\ShippingLabels\Model\ShippingLabel:
+    DefaultProvider: '(shopstandaard)'
+    ProviderDesc: 'Carrier-integratie waar dit label bij hoort.'
+    LabelTab: 'Label'
+  SilverShop\ShippingLabels\Provider\ManualProvider:
+    Title: 'Handmatig (tracking invoeren / label uploaden)'

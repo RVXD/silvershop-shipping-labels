@@ -14,7 +14,7 @@ provider interface that carriers/aggregators implement, and CMS actions to creat
 - A **Manual** provider (built in): record a tracking number / upload a label PDF for a shipment created out-of-band.
 - A **`ShippingLabel`** model (immutable; stores the PDF as a `File`) — `Order has_many ShippingLabels`.
 - **Settings → Shop → Shipping labels**: the default provider + the shop's **sender / return address**.
-- CMS actions to create and print a label (single and bulk).
+- CMS actions to create and print a label (single label per order; bulk/batch printing is planned).
 
 Carrier adapters ship as separate packages, e.g. **`silvershop/shipping-myparcel`** (MyParcel → PostNL/DHL). Add more
 by implementing `ShippingLabelProvider` and registering it:
@@ -22,7 +22,7 @@ by implementing `ShippingLabelProvider` and registering it:
 ```yaml
 SilverShop\ShippingLabels\Provider\ProviderRegistry:
   providers:
-    myparcel: '%$SilverShop\ShippingMyParcel\MyParcelProvider'
+    myparcel: 'SilverShop\ShippingMyParcel\MyParcelProvider'
 ```
 
 ## Installation

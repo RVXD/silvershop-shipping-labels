@@ -1,0 +1,22 @@
+fr:
+  SilverShop\ShippingLabels\Extension\OrderLabelExtension:
+    ShippingLabels: "Étiquettes d'expédition"
+    PackingSlipTab: 'Bon de livraison'
+    PrintPackingSlip: 'Imprimer le bon de livraison'
+  SilverShop\ShippingLabels\Extension\ShippingLabelConfigExtension:
+    DefaultProvider: "Fournisseur d'étiquettes par défaut"
+    None: '(aucun)'
+    SenderAddress: "Adresse d'expéditeur / de retour"
+    SenderName: 'Nom'
+    SenderStreet: 'Rue + numéro'
+    SenderPostcode: 'Code postal'
+    SenderCity: 'Ville'
+    SenderCountry: 'Pays (ISO 3166-1 alpha-2)'
+    SenderPhone: 'Téléphone'
+    SenderEmail: 'E-mail'
+  SilverShop\ShippingLabels\Model\ShippingLabel:
+    DefaultProvider: '(valeur par défaut de la boutique)'
+    ProviderDesc: "Intégration transporteur à laquelle cette étiquette appartient."
+    LabelTab: 'Étiquette'
+  SilverShop\ShippingLabels\Provider\ManualProvider:
+    Title: "Manuel (saisir le suivi / téléverser une étiquette)"

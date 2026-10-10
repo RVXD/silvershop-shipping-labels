@@ -1,0 +1,22 @@
+it:
+  SilverShop\ShippingLabels\Extension\OrderLabelExtension:
+    ShippingLabels: 'Etichette di spedizione'
+    PackingSlipTab: 'Bolla di consegna'
+    PrintPackingSlip: 'Stampa bolla di consegna'
+  SilverShop\ShippingLabels\Extension\ShippingLabelConfigExtension:
+    DefaultProvider: 'Fornitore etichette predefinito'
+    None: '(nessuno)'
+    SenderAddress: 'Indirizzo mittente / di reso'
+    SenderName: 'Nome'
+    SenderStreet: 'Via + numero'
+    SenderPostcode: 'CAP'
+    SenderCity: 'Città'
+    SenderCountry: 'Paese (ISO 3166-1 alpha-2)'
+    SenderPhone: 'Telefono'
+    SenderEmail: 'Email'
+  SilverShop\ShippingLabels\Model\ShippingLabel:
+    DefaultProvider: '(predefinito del negozio)'
+    ProviderDesc: 'Integrazione corriere a cui appartiene questa etichetta.'
+    LabelTab: 'Etichetta'
+  SilverShop\ShippingLabels\Provider\ManualProvider:
+    Title: "Manuale (inserisci tracking / carica un'etichetta)"

@@ -1,0 +1,22 @@
+de:
+  SilverShop\ShippingLabels\Extension\OrderLabelExtension:
+    ShippingLabels: 'Versandetiketten'
+    PackingSlipTab: 'Lieferschein'
+    PrintPackingSlip: 'Lieferschein drucken'
+  SilverShop\ShippingLabels\Extension\ShippingLabelConfigExtension:
+    DefaultProvider: 'Standard-Etikettenanbieter'
+    None: '(keiner)'
+    SenderAddress: 'Absender-/Rücksendeadresse'
+    SenderName: 'Name'
+    SenderStreet: 'Straße + Nummer'
+    SenderPostcode: 'PLZ'
+    SenderCity: 'Stadt'
+    SenderCountry: 'Land (ISO 3166-1 alpha-2)'
+    SenderPhone: 'Telefon'
+    SenderEmail: 'E-Mail'
+  SilverShop\ShippingLabels\Model\ShippingLabel:
+    DefaultProvider: '(Shop-Standard)'
+    ProviderDesc: 'Carrier-Integration, zu der dieses Etikett gehört.'
+    LabelTab: 'Etikett'
+  SilverShop\ShippingLabels\Provider\ManualProvider:
+    Title: 'Manuell (Tracking eingeben / Etikett hochladen)'

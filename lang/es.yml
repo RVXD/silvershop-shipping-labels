@@ -1,0 +1,22 @@
+es:
+  SilverShop\ShippingLabels\Extension\OrderLabelExtension:
+    ShippingLabels: 'Etiquetas de envío'
+    PackingSlipTab: 'Albarán'
+    PrintPackingSlip: 'Imprimir albarán'
+  SilverShop\ShippingLabels\Extension\ShippingLabelConfigExtension:
+    DefaultProvider: 'Proveedor de etiquetas predeterminado'
+    None: '(ninguno)'
+    SenderAddress: 'Dirección del remitente / de devolución'
+    SenderName: 'Nombre'
+    SenderStreet: 'Calle + número'
+    SenderPostcode: 'Código postal'
+    SenderCity: 'Ciudad'
+    SenderCountry: 'País (ISO 3166-1 alpha-2)'
+    SenderPhone: 'Teléfono'
+    SenderEmail: 'Correo electrónico'
+  SilverShop\ShippingLabels\Model\ShippingLabel:
+    DefaultProvider: '(predeterminado de la tienda)'
+    ProviderDesc: 'Integración de transportista a la que pertenece esta etiqueta.'
+    LabelTab: 'Etiqueta'
+  SilverShop\ShippingLabels\Provider\ManualProvider:
+    Title: 'Manual (introducir seguimiento / subir una etiqueta)'

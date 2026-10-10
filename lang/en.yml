@@ -1,0 +1,22 @@
+en:
+  SilverShop\ShippingLabels\Extension\OrderLabelExtension:
+    ShippingLabels: 'Shipping labels'
+    PackingSlipTab: 'Packing slip'
+    PrintPackingSlip: 'Print packing slip'
+  SilverShop\ShippingLabels\Extension\ShippingLabelConfigExtension:
+    DefaultProvider: 'Default label provider'
+    None: '(none)'
+    SenderAddress: 'Sender / return address'
+    SenderName: 'Name'
+    SenderStreet: 'Street + number'
+    SenderPostcode: 'Postcode'
+    SenderCity: 'City'
+    SenderCountry: 'Country (ISO 3166-1 alpha-2)'
+    SenderPhone: 'Phone'
+    SenderEmail: 'Email'
+  SilverShop\ShippingLabels\Model\ShippingLabel:
+    DefaultProvider: '(shop default)'
+    ProviderDesc: 'Carrier integration this label belongs to.'
+    LabelTab: 'Label'
+  SilverShop\ShippingLabels\Provider\ManualProvider:
+    Title: 'Manual (enter tracking / upload a label)'
